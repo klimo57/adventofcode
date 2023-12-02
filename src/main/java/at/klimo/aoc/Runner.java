@@ -1,9 +1,12 @@
 package at.klimo.aoc;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.net.MalformedURLException;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Arrays;
+import java.util.Scanner;
 import java.util.TimeZone;
 
 /**
@@ -13,20 +16,43 @@ import java.util.TimeZone;
  * The solution for the puzzle will be printed on the console
  */
 public class Runner {
+    
+    private static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
         try {
-            // get the current date in EST (EST is used by the creator of AOC) and print today's solution
-            var date = LocalDate.now(TimeZone.getTimeZone("EST").toZoneId());
-            int year = date.getYear();
-            int day = date.getDayOfMonth();
-            var input = new Input(year, day);
-            System.out.println(SolutionFactory.forDayInYear(year, day).execute(input.get()));
+            System.out.println("Enter year and day for the puzzle you want to run (default: today's puzzle):");
+            var yearAndDay = requestPuzzleFromUser();
+            var input = new Input(yearAndDay[0], yearAndDay[1]);
+            System.out.println(SolutionFactory.forDayInYear(yearAndDay[0], yearAndDay[1]).execute(input.get()));
         } catch (Throwable e) {
             System.exit(handleError(e));
         }
         System.out.println("SUCCESS");
         System.exit(0);
+    }
+
+    private static int[] requestPuzzleFromUser() {
+        try(var scanner = new Scanner(System.in)) {
+            String input = scanner.nextLine();
+            // get the current date in EST (EST is used by the creator of AOC) and print today's solution
+            var date = LocalDate.now(TimeZone.getTimeZone("EST").toZoneId());
+            int year = date.getYear();
+            int day = date.getDayOfMonth();
+            if(StringUtils.isNotBlank(input)) {
+                if(input.contains("/")) {
+                    var yearAndDay = input.split("/");
+                    year = Integer.parseInt(yearAndDay[0]);
+                    day = Integer.parseInt(yearAndDay[1]);
+                } else {
+                    day = Integer.parseInt(input);
+                }
+            }
+            return new int[]{year, day};
+        } catch (NumberFormatException e) {
+            System.out.println("Enter a year and date (yyyy/dd), a day (dd) or nothing for the current year and day");
+            return requestPuzzleFromUser();
+        }
     }
 
     @SuppressWarnings("SwitchLabeledRuleCanBeCodeBlock")

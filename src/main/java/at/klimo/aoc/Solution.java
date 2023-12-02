@@ -1,12 +1,15 @@
 package at.klimo.aoc;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.Objects;
 
 @FunctionalInterface
-public interface Solution {
-    String execute(String[] input) throws ImplementationException;
+public interface Solution<T> {
+    T puzzle1(String[] input) throws ImplementationException;
+
+    default T puzzle2(String[] input) throws ImplementationException {
+        return puzzle1(input);
+    }
 }
 
 class SolutionFactory {

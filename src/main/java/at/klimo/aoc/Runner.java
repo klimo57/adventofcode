@@ -4,8 +4,6 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.net.MalformedURLException;
 import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.Arrays;
 import java.util.Scanner;
 import java.util.TimeZone;
 
@@ -16,15 +14,17 @@ import java.util.TimeZone;
  * The solution for the puzzle will be printed on the console
  */
 public class Runner {
-    
+
     private static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
         try {
             System.out.println("Enter year and day for the puzzle you want to run (default: today's puzzle):");
             var yearAndDay = requestPuzzleFromUser();
-            var input = new Input(yearAndDay[0], yearAndDay[1]);
-            System.out.println(SolutionFactory.forDayInYear(yearAndDay[0], yearAndDay[1]).execute(input.get()));
+            var input = new Input(yearAndDay[0], yearAndDay[1]).get();
+            Solution<?> solution = SolutionFactory.forDayInYear(yearAndDay[0], yearAndDay[1]);
+            System.out.println("P1: " + solution.puzzle1(input));
+            System.out.println("P2: " + solution.puzzle2(input));
         } catch (Throwable e) {
             System.exit(handleError(e));
         }
@@ -33,14 +33,14 @@ public class Runner {
     }
 
     private static int[] requestPuzzleFromUser() {
-        try(var scanner = new Scanner(System.in)) {
+        try (var scanner = new Scanner(System.in)) {
             String input = scanner.nextLine();
             // get the current date in EST (EST is used by the creator of AOC) and print today's solution
             var date = LocalDate.now(TimeZone.getTimeZone("EST").toZoneId());
             int year = date.getYear();
             int day = date.getDayOfMonth();
-            if(StringUtils.isNotBlank(input)) {
-                if(input.contains("/")) {
+            if (StringUtils.isNotBlank(input)) {
+                if (input.contains("/")) {
                     var yearAndDay = input.split("/");
                     year = Integer.parseInt(yearAndDay[0]);
                     day = Integer.parseInt(yearAndDay[1]);

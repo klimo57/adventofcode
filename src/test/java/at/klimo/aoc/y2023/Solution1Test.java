@@ -5,7 +5,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.util.Arrays;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -14,7 +13,7 @@ class Solution1Test {
 
     @Test
     void testForExampleInput() {
-        String result = new Solution1().execute(new String[]{
+        String result = new Solution1().puzzle1(new String[]{
             "1abc2",
             "pqr3stu8vwx",
             "a1b2c3d4e5f",
@@ -25,7 +24,7 @@ class Solution1Test {
 
     @Test
     void testForSecondPuzzle() {
-        String result = new Solution1().execute(new String[]{
+        String result = new Solution1().puzzle1(new String[]{
             "two1nine",
             "eightwothree",
             "abcone2threexyz",

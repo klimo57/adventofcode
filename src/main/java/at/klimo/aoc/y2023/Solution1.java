@@ -7,9 +7,9 @@ import org.apache.commons.lang3.math.NumberUtils;
 import java.util.Arrays;
 import java.util.Optional;
 
-public class Solution1 implements Solution<String> {
+public class Solution1 implements Solution<String[], String> {
     @Override
-    public String puzzle1(String[] input) throws ImplementationException {
+    public String solveP1(String[] input) throws ImplementationException {
         return "" + Arrays.stream(input)
             .mapToInt(line -> new UncalibratedLine(line).calibrate(line, 0, line.length() - 1))
             .sum();

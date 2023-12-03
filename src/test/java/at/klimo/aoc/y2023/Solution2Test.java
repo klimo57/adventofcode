@@ -16,13 +16,13 @@ class Solution2Test {
 
     @Test
     void testPuzzle1() {
-        var result = new Solution2().puzzle1(inputP1);
+        var result = new Solution2().solveP1(inputP1);
         assertEquals(8, result);
     }
 
     @Test
     void testPuzzle2() {
-        var result = new Solution2().puzzle2(inputP1);
+        var result = new Solution2().solveP2(inputP1);
         assertEquals(2286, result);
     }
 }

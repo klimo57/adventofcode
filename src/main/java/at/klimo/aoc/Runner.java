@@ -22,7 +22,7 @@ public class Runner {
             System.out.println("Enter year and day for the puzzle you want to run (default: today's puzzle):");
             var yearAndDay = requestPuzzleFromUser();
             var input = new Input(yearAndDay[0], yearAndDay[1]).get();
-            Solution<?> solution = SolutionFactory.forDayInYear(yearAndDay[0], yearAndDay[1]);
+            Solution<?, ?> solution = SolutionFactory.forDayInYear(yearAndDay[0], yearAndDay[1]);
             System.out.println("P1: " + solution.puzzle1(input));
             System.out.println("P2: " + solution.puzzle2(input));
         } catch (Throwable e) {

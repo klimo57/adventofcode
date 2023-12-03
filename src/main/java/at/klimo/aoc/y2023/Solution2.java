@@ -6,14 +6,14 @@ import at.klimo.aoc.Solution;
 import static java.util.Arrays.stream;
 import static java.util.stream.Collectors.toMap;
 
-public class Solution2 implements Solution<Integer> {
+public class Solution2 implements Solution<String[], Integer> {
 
     /**
      * puzzle 1 looks for games with a bag that could contain 12 red, 13 green and 14 blue cubes
      * the solution is the sum of the games ids
      */
     @Override
-    public Integer puzzle1(String[] input) throws ImplementationException {
+    public Integer solveP1(String[] input) throws ImplementationException {
         return stream(input)
             .map(Solution2::readGame)
             .filter(game -> game.red <= 12 && game.green <= 13 && game.blue <= 14)
@@ -26,7 +26,7 @@ public class Solution2 implements Solution<Integer> {
      * the solution is the sum of the products of the number of cubes of each game
      */
     @Override
-    public Integer puzzle2(String[] input) throws ImplementationException {
+    public Integer solveP2(String[] input) throws ImplementationException {
         return stream(input)
             .map(Solution2::readGame)
             .mapToInt(Game::power)

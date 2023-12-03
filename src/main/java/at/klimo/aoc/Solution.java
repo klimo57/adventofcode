@@ -3,12 +3,28 @@ package at.klimo.aoc;
 import java.util.Arrays;
 import java.util.Objects;
 
-@FunctionalInterface
-public interface Solution<T> {
-    T puzzle1(String[] input) throws ImplementationException;
+public interface Solution<I, T> {
+    default String puzzle1(String[] input) throws ImplementationException {
+        return mapOutput(solveP1(mapInput(input)));
+    }
 
-    default T puzzle2(String[] input) throws ImplementationException {
-        return puzzle1(input);
+    default String puzzle2(String[] input) throws ImplementationException {
+        return mapOutput(solveP2(mapInput(input)));
+    }
+
+    default I mapInput(String[] input) {
+        //noinspection unchecked
+        return (I) input;
+    }
+
+    default String mapOutput(T output) {
+        return output.toString();
+    }
+
+    T solveP1(I input) throws ImplementationException;
+
+    default T solveP2(I input) throws ImplementationException {
+        return solveP1(input);
     }
 }
 

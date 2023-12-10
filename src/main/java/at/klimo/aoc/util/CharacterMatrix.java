@@ -2,6 +2,7 @@ package at.klimo.aoc.util;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
@@ -18,12 +19,28 @@ public class CharacterMatrix {
         width = length > 0 ? matrix[0].length : 0;
     }
 
+    public Value valueAt(PointXY coordinates) {
+        return new Value(at(coordinates), coordinates);
+    }
+
     public char at(PointXY coordinates) {
         return at(coordinates.x(), coordinates.y());
     }
 
     public char at(int x, int y) {
         return matrix[y][x];
+    }
+
+    public List<Value> neighbours(PointXY coordinates) {
+        var neighbours = new ArrayList<Value>();
+        for (int i = coordinates.y() - 1; i <= coordinates.y() + 1; i++) {
+            for (int j = coordinates.x() - 1; j <= coordinates.x() + 1; j++) {
+                if (j >= 0 && j < width && i >= 0 && i < length && !(j == coordinates.x() && i == coordinates.y())) {
+                    neighbours.add(new Value(at(j, i), new PointXY(j, i)));
+                }
+            }
+        }
+        return neighbours;
     }
 
     public Predicate<PointXY> includes() {

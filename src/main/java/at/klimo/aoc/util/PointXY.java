@@ -3,6 +3,7 @@ package at.klimo.aoc.util;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -10,10 +11,15 @@ import java.util.Optional;
 import static java.util.Optional.empty;
 import static java.util.Optional.of;
 
-public record PointXY(int x, int y) {
+public record PointXY(int x, int y) implements Comparable<PointXY> {
 
     public Neighbours neighbours(int gridWidth, int gridLength) {
         return new Neighbours(this, gridWidth, gridLength);
+    }
+
+    @Override
+    public int compareTo(PointXY o) {
+        return Comparator.comparing(PointXY::y).thenComparing(PointXY::x).compare(this, o);
     }
 
     @Override

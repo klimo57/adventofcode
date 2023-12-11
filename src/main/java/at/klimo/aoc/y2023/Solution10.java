@@ -4,6 +4,7 @@ import at.klimo.aoc.ImplementationException;
 import at.klimo.aoc.Solution;
 import at.klimo.aoc.util.CharacterMatrix;
 import at.klimo.aoc.util.PointXY;
+import org.apache.commons.lang3.Range;
 
 import java.util.*;
 import java.util.function.BiFunction;
@@ -22,11 +23,35 @@ public class Solution10 implements Solution<CharacterMatrix, Long> {
     @Override
     public Long solveP2(CharacterMatrix input) throws ImplementationException {
         var pipeline = createPipeline(input, start(input));
-        return input.stream()
+        var enclosingRanges = enclosingRanges(input, pipeline);
+        var enclosedPoints = input.stream()
             .map(CharacterMatrix.Value::coordinates)
             .filter(not(pipeline::contains))
-            .filter(pipeline::encloses)
-            .count();
+            .filter(p -> enclosingRanges.stream().anyMatch(range -> range.contains(p)))
+            .toList();
+        return (long) enclosedPoints.size();
+    }
+
+    static List<Range<PointXY>> enclosingRanges(CharacterMatrix matrix, Pipeline pipeline) {
+        var enclosingRanges = new ArrayList<Range<PointXY>>();
+        for (int i = 1; i < matrix.length - 1; i++) {
+            PointXY rangeStart = null;
+            for (int j = 0; j < matrix.width; j++) {
+                var cur = new PointXY(j, i);
+                var below = new PointXY(j, i + 1);
+                if (pipeline.contains(cur) &&
+                    pipeline.contains(below) &&
+                    Math.abs(pipeline.indexOf(cur) - pipeline.indexOf(below)) == 1) {
+                    if (rangeStart == null) {
+                        rangeStart = cur;
+                    } else if (rangeStart != null) {
+                        enclosingRanges.add(Range.between(rangeStart, cur));
+                        rangeStart = null;
+                    }
+                }
+            }
+        }
+        return enclosingRanges;
     }
 
     static Tile start(CharacterMatrix matrix) {
@@ -61,8 +86,6 @@ public class Solution10 implements Solution<CharacterMatrix, Long> {
     }
 
     static class Pipeline {
-        static final List<Pipe> pipesToCountForConfinement = List.of(Pipe.NE_BEND, Pipe.NW_BEND, Pipe.SW_BEND, Pipe.SE_BEND);
-
         final List<Tile> tiles;
         final Function<PointXY, Tile> tileAt;
 
@@ -75,81 +98,14 @@ public class Solution10 implements Solution<CharacterMatrix, Long> {
             return tiles.contains(new Tile(Pipe.GROUND, t));
         }
 
-        boolean encloses(PointXY p) {
-            var loop = tiles.stream().map(Tile::coordinates).toList();
-            var up = isConfinedUpwards(p, loop);
-            var right = isConfinedRightwards(p, loop);
-            var down = isConfinedDownwards(p, loop);
-            var left = isConfinedLeftwards(p, loop);
-            var encloses = isConfinedUpwards(p, loop) &&
-                isConfinedRightwards(p, loop) &&
-                isConfinedDownwards(p, loop) &&
-                isConfinedLeftwards(p, loop);
-            return encloses;
-        }
-
-        boolean isConfinedUpwards(PointXY p, List<PointXY> loop) {
-            var loopTilesToBorder = 0;
-            for (int i = p.y() - 1; i >= 0; i--) {
-                var toCheck = new PointXY(p.x(), i);
-                var tile = tileAt.apply(toCheck);
-                if (loop.contains(toCheck) && tile.pipe != Pipe.VERTICAL) {
-                    loopTilesToBorder++;
-                }
-            }
-            return loopTilesToBorder % 2 == 1;
-        }
-
-        boolean isConfinedRightwards(PointXY p, List<PointXY> loop) {
-            var loopTilesToBorder = 0;
-            var rightmostPointOfLoop = loop.stream().mapToInt(PointXY::x).max().orElse(0);
-            for (int i = p.x() + 1; i <= rightmostPointOfLoop; i++) {
-                var toCheck = new PointXY(i, p.y());
-                var tile = tileAt.apply(toCheck);
-                if (loop.contains(toCheck) && tile.pipe != Pipe.HORIZONTAL) {
-                    loopTilesToBorder++;
-                }
-            }
-            return loopTilesToBorder % 2 == 1;
-        }
-
-        boolean isConfinedDownwards(PointXY p, List<PointXY> loop) {
-            var loopTilesToBorder = 0;
-            var lowestPointOfLoop = loop.stream().mapToInt(PointXY::y).max().orElse(0);
-            for (int i = p.y() + 1; i <= lowestPointOfLoop; i++) {
-                var toCheck = new PointXY(p.x(), i);
-                var tile = tileAt.apply(toCheck);
-                if (loop.contains(toCheck) && tile.pipe != Pipe.VERTICAL) {
-                    loopTilesToBorder++;
-                }
-            }
-            return loopTilesToBorder % 2 == 1;
-        }
-
-        boolean isConfinedLeftwards(PointXY p, List<PointXY> loop) {
-            var loopTilesToBorder = 0;
-            for (int i = p.x() - 1; i >= 0; i--) {
-                var toCheck = new PointXY(i, p.y());
-                var tile = tileAt.apply(toCheck);
-                if (loop.contains(toCheck) && tile.pipe != Pipe.HORIZONTAL) {
-                    loopTilesToBorder++;
-                }
-            }
-            return loopTilesToBorder % 2 == 1;
+        int indexOf(PointXY p) {
+            return tiles.indexOf(tileAt.apply(p));
         }
     }
 
     record Tile(Pipe pipe, PointXY coordinates) {
         Tile(CharacterMatrix.Value val) {
             this(Pipe.fromType(val.value()), val.coordinates());
-        }
-
-        int x() {
-            return coordinates.x();
-        }
-
-        int y() {
-            return coordinates.y();
         }
 
         boolean isConnected(Tile other, CharacterMatrix matrix) {

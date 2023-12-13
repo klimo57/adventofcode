@@ -13,5 +13,9 @@ import java.lang.annotation.Target;
 public @interface AOCInputSource {
     String[] values() default {};
 
+    Class<?> expectedType() default Long.class;
+
     long[] expectationsAsLong() default {};
+
+    int[] expectationsAsInt() default {};
 }

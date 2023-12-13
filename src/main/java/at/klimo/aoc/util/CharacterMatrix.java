@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -16,6 +17,10 @@ public class CharacterMatrix {
 
     public CharacterMatrix(String[] input) {
         this(Arrays.stream(input).map(String::toCharArray).toArray(char[][]::new));
+    }
+
+    public CharacterMatrix(List<String> input) {
+        this(input.stream().map(String::toCharArray).toArray(char[][]::new));
     }
 
     public CharacterMatrix(char[][] matrix) {
@@ -43,11 +48,21 @@ public class CharacterMatrix {
             .toList();
     }
 
+    public String rowAsString(int index) {
+        return new String(matrix[index]);
+    }
+
     public List<Value> column(int index) {
         return IntStream.range(0, length)
             .mapToObj(i -> new PointXY(index, i))
             .map(p -> new Value(at(p), p))
             .toList();
+    }
+
+    public String columnAsString(int index) {
+        var result = new StringBuilder();
+        IntStream.range(0, length).forEach(i -> result.append(matrix[i][index]));
+        return result.toString();
     }
 
     public CharacterMatrix insertRow(char[] chars, int index, char filler) {
@@ -92,6 +107,12 @@ public class CharacterMatrix {
         return new CharacterMatrix(newMatrix);
     }
 
+    public CharacterMatrix replaceCharAt(int x, int y, char c) {
+        var copy = Arrays.stream(matrix).map(char[]::clone).toArray(char[][]::new);
+        copy[y][x] = c;
+        return new CharacterMatrix(copy);
+    }
+
     public List<Value> neighbours(PointXY coordinates) {
         var neighbours = new ArrayList<Value>();
         for (int i = coordinates.y() - 1; i <= coordinates.y() + 1; i++) {
@@ -118,6 +139,19 @@ public class CharacterMatrix {
             }
         }
         return values.stream();
+    }
+
+    public Stream<String> rows() {
+        return IntStream.range(0, length).mapToObj(this::rowAsString);
+    }
+
+    public Stream<String> columns() {
+        return IntStream.range(0, width).mapToObj(this::columnAsString);
+    }
+
+    @Override
+    public String toString() {
+        return "\n" + rows().collect(Collectors.joining("\n"));
     }
 
     public record Value(char value, PointXY coordinates) {

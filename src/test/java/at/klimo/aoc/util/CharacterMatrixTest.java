@@ -27,4 +27,49 @@ public class CharacterMatrixTest {
         var result = new CharacterMatrix(lines).columnAsString(1);
         assertEquals("258", result);
     }
+
+    @Test
+    void testTranspose() {
+        var m = new CharacterMatrix(new String[]{
+                "123",
+                "456",
+                "789"
+        });
+        var result = m.transpose();
+        assertEquals(new CharacterMatrix(new String[]{
+                "147",
+                "258",
+                "369"
+        }), result);
+    }
+
+    @Test
+    void testSpin90degClockwise() {
+        var m = new CharacterMatrix(new String[]{
+                "123",
+                "456",
+                "789"
+        });
+        var result = m.spin90degClockwise();
+        assertEquals(new CharacterMatrix(new String[]{
+                "741",
+                "852",
+                "963"
+        }), result);
+    }
+
+    @Test
+    void testReplace() {
+        var m = new CharacterMatrix(new String[]{
+                "123",
+                "456",
+                "789"
+        });
+        var result = m.replaceCharAt(1, 1, 'X');
+        assertEquals(new CharacterMatrix(new String[]{
+                "123",
+                "4X6",
+                "789"
+        }), result);
+    }
 }

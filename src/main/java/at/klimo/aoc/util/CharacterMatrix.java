@@ -1,8 +1,12 @@
 package at.klimo.aoc.util;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.math3.linear.MatrixUtils;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -24,7 +28,7 @@ public class CharacterMatrix {
     }
 
     public CharacterMatrix(char[][] matrix) {
-        this.matrix = matrix;
+        this.matrix = matrix != null ? matrix : new char[0][0];
         length = matrix.length;
         width = length > 0 ? matrix[0].length : 0;
     }
@@ -85,6 +89,10 @@ public class CharacterMatrix {
         return new CharacterMatrix(newMatrix);
     }
 
+    public CharacterMatrix copy() {
+        return new CharacterMatrix(rows().toList());
+    }
+
     public CharacterMatrix insertColumn(char[] chars, int index, char filler) {
         char[] newColumn = Arrays.copyOf(chars, length);
         if (chars.length < length) {
@@ -111,6 +119,14 @@ public class CharacterMatrix {
         var copy = Arrays.stream(matrix).map(char[]::clone).toArray(char[][]::new);
         copy[y][x] = c;
         return new CharacterMatrix(copy);
+    }
+
+    public CharacterMatrix transpose() {
+        return new CharacterMatrix(columns().toList());
+    }
+
+    public CharacterMatrix spin90degClockwise() {
+        return new CharacterMatrix(columns().map(StringUtils::reverse).toList());
     }
 
     public List<Value> neighbours(PointXY coordinates) {
@@ -147,6 +163,19 @@ public class CharacterMatrix {
 
     public Stream<String> columns() {
         return IntStream.range(0, width).mapToObj(this::columnAsString);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CharacterMatrix that = (CharacterMatrix) o;
+        return Objects.equals(rows().toList(), that.rows().toList());
+    }
+
+    @Override
+    public int hashCode() {
+        return Arrays.hashCode(matrix);
     }
 
     @Override

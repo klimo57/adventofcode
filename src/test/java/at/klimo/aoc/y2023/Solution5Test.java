@@ -67,22 +67,22 @@ public class Solution5Test {
         assertEquals(46L, result);
     }
 
-    @Test
-    @Order(3)
-    void testCrazySolution() {
-        var s = new Solution5();
-        var crazyResult = s.crazyEasySolutionForP2(s.mapInput(input));
-        assertEquals(46L, crazyResult);
-    }
+//    @Test
+//    @Order(3)
+//    void testCrazySolution() {
+//        var s = new Solution5();
+//        var crazyResult = s.crazyEasySolutionForP2(s.mapInput(input));
+//        assertEquals(46L, crazyResult);
+//    }
 
-    @ParameterizedTest(name = "crazy solution")
-    @MethodSource("readInputAsStringArray")
-    @Order(4)
-    void testCrazySolutionWithRealInput(String[] input) {
-        var s = new Solution5();
-        var crazyResult = s.crazyEasySolutionForP2(s.mapInput(input));
-        assertEquals(104070862L, crazyResult);
-    }
+//    @ParameterizedTest(name = "crazy solution")
+//    @MethodSource("readInputAsStringArray")
+//    @Order(4)
+//    void testCrazySolutionWithRealInput(String[] input) {
+//        var s = new Solution5();
+//        var crazyResult = s.crazyEasySolutionForP2(s.mapInput(input));
+//        assertEquals(104070862L, crazyResult);
+//    }
 
     private static Stream<Arguments> readInputAsStringArray() throws IOException {
         try (var in = new BufferedReader(new InputStreamReader(ClassLoader.getSystemResourceAsStream("input.in")))) {

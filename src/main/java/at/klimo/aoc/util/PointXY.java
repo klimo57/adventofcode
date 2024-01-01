@@ -17,6 +17,10 @@ public record PointXY(int x, int y) implements Comparable<PointXY> {
         return new Neighbours(this, gridWidth, gridLength);
     }
 
+    public Neighbours neighbours(CharacterMatrix matrix) {
+        return neighbours(matrix.width, matrix.length);
+    }
+
     @Override
     public int compareTo(PointXY o) {
         return Comparator.comparing(PointXY::y).thenComparing(PointXY::x).compare(this, o);
@@ -57,6 +61,14 @@ public record PointXY(int x, int y) implements Comparable<PointXY> {
                 .toList();
         }
 
+        public List<PointXY> straight() {
+            return List.of(upper(), lower(), left(), right())
+                .stream()
+                .filter(Optional::isPresent)
+                .map(Optional::get)
+                .toList();
+        }
+
         public Optional<PointXY> upperLeft() {
             if (home.x < 1 || home.y < 1) {
                 return empty();
@@ -87,7 +99,7 @@ public record PointXY(int x, int y) implements Comparable<PointXY> {
 
         public Optional<PointXY> right() {
             if (home.x >= gridWidth - 1) {
-                empty();
+                return empty();
             }
             return of(new PointXY(home.x + 1, home.y));
         }

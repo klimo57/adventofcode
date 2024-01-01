@@ -1,7 +1,6 @@
 package at.klimo.aoc.util;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.math3.linear.MatrixUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -119,6 +118,18 @@ public class CharacterMatrix {
         var copy = Arrays.stream(matrix).map(char[]::clone).toArray(char[][]::new);
         copy[y][x] = c;
         return new CharacterMatrix(copy);
+    }
+
+    public CharacterMatrix replaceCharAt(PointXY p, char c) {
+        return replaceCharAt(p.x(), p.y(), c);
+    }
+
+    public CharacterMatrix reflectY() {
+        return new CharacterMatrix(rows().map(StringUtils::reverse).toList());
+    }
+
+    public CharacterMatrix reflectX() {
+        return new CharacterMatrix(rows().toList().reversed());
     }
 
     public CharacterMatrix transpose() {

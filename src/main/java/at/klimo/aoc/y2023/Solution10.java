@@ -2,8 +2,8 @@ package at.klimo.aoc.y2023;
 
 import at.klimo.aoc.ImplementationException;
 import at.klimo.aoc.Solution;
-import at.klimo.aoc.util.CharacterMatrix;
-import at.klimo.aoc.util.PointXY;
+import at.klimo.chars.CharacterMatrix;
+import at.klimo.common.PointXY;
 import org.apache.commons.lang3.Range;
 
 import java.util.*;
@@ -44,7 +44,7 @@ public class Solution10 implements Solution<CharacterMatrix, Long> {
                     Math.abs(pipeline.indexOf(cur) - pipeline.indexOf(below)) == 1) {
                     if (rangeStart == null) {
                         rangeStart = cur;
-                    } else if (rangeStart != null) {
+                    } else {
                         enclosingRanges.add(Range.between(rangeStart, cur));
                         rangeStart = null;
                     }

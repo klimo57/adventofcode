@@ -2,8 +2,8 @@ package at.klimo.aoc.y2023;
 
 import at.klimo.aoc.ImplementationException;
 import at.klimo.aoc.Solution;
-import at.klimo.aoc.util.CharacterMatrix;
-import at.klimo.aoc.util.PointXY;
+import at.klimo.chars.CharacterMatrix;
+import at.klimo.common.PointXY;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.Pair;

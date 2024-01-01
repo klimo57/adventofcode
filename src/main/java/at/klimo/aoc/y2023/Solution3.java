@@ -2,8 +2,8 @@ package at.klimo.aoc.y2023;
 
 import at.klimo.aoc.ImplementationException;
 import at.klimo.aoc.Solution;
-import at.klimo.aoc.util.CharacterMatrix;
-import at.klimo.aoc.util.PointXY;
+import at.klimo.chars.CharacterMatrix;
+import at.klimo.common.PointXY;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.ArrayList;
@@ -32,7 +32,7 @@ public class Solution3 implements Solution<CharacterMatrix, Integer> {
         return readNumbers(engineSchematics)
             .map(number -> Pair.of(number, number.neighbours().filter(gearCoordinates::contains).findAny().orElse(null))) // CAVEAT: could there be more than 1 gear at a partNr?
             .filter(numberAndGear -> numberAndGear.getRight() != null)
-            .collect(Collectors.groupingBy(numberAndGear -> numberAndGear.getRight()))
+            .collect(Collectors.groupingBy(Pair::getRight))
             .values()
             .stream()
             .filter(numbers -> numbers.size() >= 2)
@@ -45,12 +45,12 @@ public class Solution3 implements Solution<CharacterMatrix, Integer> {
         for (int i = 0; i < engineSchematics.length; i++) {
             for (int j = 0; j < engineSchematics.width; j++) {
                 if (Character.isDigit(engineSchematics.at(j, i))) {
-                    String partNr = "";
+                    StringBuilder partNr = new StringBuilder();
                     int k = j;
                     for (; k < engineSchematics.width && Character.isDigit(engineSchematics.at(k, i)); k++) {
-                        partNr += engineSchematics.at(k, i);
+                        partNr.append(engineSchematics.at(k, i));
                     }
-                    numbers.add(new NumberInSchematic(Integer.parseInt(partNr), new PointXY(j, i), new PointXY(k - 1, i)));
+                    numbers.add(new NumberInSchematic(Integer.parseInt(partNr.toString()), new PointXY(j, i), new PointXY(k - 1, i)));
                     j += partNr.length() - 1;
                 }
             }

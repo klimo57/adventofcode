@@ -1,7 +1,7 @@
 package at.klimo.aoc.y2023;
 
 import at.klimo.aoc.AOCInputSource;
-import at.klimo.aoc.util.CharacterMatrix;
+import at.klimo.chars.CharacterMatrix;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 

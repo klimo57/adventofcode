@@ -2,7 +2,7 @@ package at.klimo.aoc.y2023;
 
 import at.klimo.aoc.ImplementationException;
 import at.klimo.aoc.Solution;
-import at.klimo.aoc.util.CharacterMatrix;
+import at.klimo.chars.CharacterMatrix;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;

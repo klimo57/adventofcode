@@ -2,9 +2,9 @@ package at.klimo.aoc.y2023;
 
 import at.klimo.aoc.ImplementationException;
 import at.klimo.aoc.Solution;
-import at.klimo.aoc.util.CharacterMatrix;
-import at.klimo.aoc.util.graph.INode;
-import at.klimo.aoc.util.graph.Node;
+import at.klimo.chars.CharacterMatrix;
+import at.klimo.graph.INode;
+import at.klimo.graph.Node;
 
 import java.util.Set;
 import java.util.stream.Collectors;

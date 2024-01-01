@@ -1,7 +1,7 @@
 package at.klimo.aoc.y2023;
 
-import at.klimo.aoc.util.CharacterMatrix;
-import at.klimo.aoc.util.PointXY;
+import at.klimo.chars.CharacterMatrix;
+import at.klimo.common.PointXY;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

@@ -36,7 +36,7 @@ public class Solution21Test {
         expectationsAsInt = {16}
     )
     void testP1(String[] input, int expected) {
-        solution.steps = 6;
+//        solution.steps = 6;
         var result = solution.solveP1(solution.mapInput(input));
         assertEquals(expected, result);
     }

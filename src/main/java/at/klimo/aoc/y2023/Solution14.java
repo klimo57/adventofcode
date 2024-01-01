@@ -2,9 +2,7 @@ package at.klimo.aoc.y2023;
 
 import at.klimo.aoc.ImplementationException;
 import at.klimo.aoc.Solution;
-import at.klimo.aoc.util.CharacterMatrix;
-
-import java.util.stream.IntStream;
+import at.klimo.chars.CharacterMatrix;
 
 public class Solution14 implements Solution<CharacterMatrix, Integer> {
 

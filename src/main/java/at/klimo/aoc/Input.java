@@ -10,7 +10,7 @@ import java.util.concurrent.ConcurrentLinkedDeque;
 
 public class Input {
 
-    private static final String SESSION = "53616c7465645f5f18c91d7909c0f953f5c1f8aa97b736271cd6177aec74d3b6fe4cb430abf82bf2ebbfbc59b1a0ed86a0a8105644cfb61c15e13bd8693eb35d";
+    private static final String SESSION = "53616c7465645f5f2003e940ecec9885a7e0305d785bc15140191f073881ae073c520b3570db623cab156b55c169b439a997dd8a47aef7686985de326b937cdb";
 
     private final URL url;
 
